@@ -1,0 +1,46 @@
+# == MAC OS FILES == #
+.DS_Store
+
+# == VIRTUAL ENV & PYENV == #
+myEnv/
+env/
+.python-version
+
+# == NODE == # 
+# dependencies
+**/node_modules
+**/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# == VISUAL CODE FILES == #
+**/.vscode/
+*.code-workspace
+.history
+
+# == DJANGO == #
+**/db.sqlite3
+db.sqlite3
+**/__pycache__
+__pycache__
+**/invoicesHistory
+**/Output_PDF
+*.log
+*.pot
+*.bak
+
+# == MISC == #
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# For unit testing
+dictToReview.txt
