@@ -14,7 +14,7 @@ import bs4
 # Set up logging for module
 logger = moduleLogging()
 
-class Table2Dict:
+class Table:
     """
     Class that is capable of converting an html table (1D or 2D) in a list or a dictionnary or simply give informations about passed table.
     It can also return the full table converted to a JSON object or return only the table header, body or the full table converted
@@ -415,7 +415,7 @@ class Table2Dict:
                 break
             # Get row contents
             rowContents = row.contents
-            contentCount = len(Table2Dict.removeNewLines(rowContents))
+            contentCount = len(Table.removeNewLines(rowContents))
             # Store number of columns of table (to return)
             if rowIndex == 0:
                 totalColumns = contentCount
@@ -483,14 +483,14 @@ class Table2Dict:
         headerRowLength = tableType["total_header_rows"]
         # Init table reprentation
         tableRepr = []
-        headerFirstRow = Table2Dict.removeNewLines(self.allRows[0].contents)
+        headerFirstRow = Table.removeNewLines(self.allRows[0].contents)
         # === 1. Get data of first row and start table list reprentation === #
         for cell in headerFirstRow:
             columnReprList = []
             # Get rowspans and colspans (if any the convert to int or return None)
-            rowspan, colspan = Table2Dict.getSpans(cell)
+            rowspan, colspan = Table.getSpans(cell)
             # Insert data in table reprentation
-            tableRepr = Table2Dict.insertRows(
+            tableRepr = Table.insertRows(
                 cell, rowspan, colspan, 0, tableRepr, "firstHeaderRow"
             )
 
@@ -509,12 +509,12 @@ class Table2Dict:
                 if rowIndex == headerRowLength:
                     break
                 # Get row content and clean them
-                rowChildren = Table2Dict.removeNewLines(row.contents)
+                rowChildren = Table.removeNewLines(row.contents)
                 # Loop through elements and insert them in table list representation
                 for cell in rowChildren:
                     # Get rowspans and colspans (if any the convert to int or return None)
-                    rowspan, colspan = Table2Dict.getSpans(cell)
-                    tableRepr = Table2Dict.insertRows(
+                    rowspan, colspan = Table.getSpans(cell)
+                    tableRepr = Table.insertRows(
                         cell, rowspan, colspan, rowIndex, tableRepr, "headerRow"
                     )
         logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
@@ -546,20 +546,20 @@ class Table2Dict:
             # Since we skipped header, row index is out whack so re-adjust rowIndex at correct index
             # rowIndex += headerRowLength
             # Get row content and clean them
-            rowChildren = Table2Dict.removeNewLines(row.contents)
+            rowChildren = Table.removeNewLines(row.contents)
             # Loop through elements and insert them in table list representation
             for cell in rowChildren:
                 # Get rowspans (if any the convert to int or return None)
-                rowspan, colspan = Table2Dict.getSpans(cell)
+                rowspan, colspan = Table.getSpans(cell)
                 # If this is the first row
                 if rowIndex == 0:
-                    tableBodyRepr = Table2Dict.insertRows(
+                    tableBodyRepr = Table.insertRows(
                         cell, rowspan, colspan, rowIndex, tableBodyRepr, "firstBodyRow"
                     )
                     logger.info(f"Cell entered in the first row of table body !")
                     logger.info(f"{tableBodyRepr}")
                 else:
-                    tableBodyRepr = Table2Dict.insertRows(
+                    tableBodyRepr = Table.insertRows(
                         cell, rowspan, colspan, rowIndex, tableBodyRepr, "bodyRow"
                     )
                     logger.info(f"Cell entered in row of table body !")

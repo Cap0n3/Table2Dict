@@ -4,7 +4,6 @@ import sys
 import re
 import inspect
 from bs4 import BeautifulSoup
-import requests
 import json
 
 # Go to parent folder to find modules (it's so stupid to have to do that ...)
@@ -13,8 +12,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir) 
 
 # Import class & functions
-from BandAPI.BandWiki import BandWiki
-from BandAPI.CustomPackage.ExtractTableMod import ExtractTable
+from src.cap0n3_Table2Dict import Table2Dict
 
 #================#
 #=== Settings ===#
@@ -22,74 +20,14 @@ from BandAPI.CustomPackage.ExtractTableMod import ExtractTable
 
 PATH = os.path.dirname(os.path.realpath(__file__))
 
-#===========================#
-#=== Test Data reference ===#
-#===========================#
-
-BAND_LIST = ["Nirvana", "Queens of the stone age", "Knocked Loose", "Korn", "Mastodon", "Melvins", "Pearl jam", "Graveyard"]
-
-TEST_MAIN_DICT = {
-    'Origin': 'Aberdeen, Washington, U.S.', 
-    'Genres': ['Grunge', 'alternative rock', 'punk rock', 'hard rock'], 
-    'Years active': '1987–1994', 
-    'Labels': ['Sub Pop', 'DGC'], 
-    'Associated acts': ['Foo Fighters', 'Fecal Matter', 'Melvins', 'Scream', 'Sweet 75', 'Giants in the Trees'], 
-    'Website': 'nirvana.com', 
-    'Past members': ['Kurt Cobain', 'Krist Novoselic', 'Dave Grohl'], 
-    'Discography': ['Bleach (1989)', 'Nevermind (1991)', 'In Utero (1993)']
-}
-
-TEST_DISCO_LIST = ['Bleach (1989)', 'Nevermind (1991)', 'In Utero (1993)']
 
 #===========================#
 #========= Testing =========#
 #===========================#
 
-@unittest.skip("Comment here to test")
-class test_BandWiki(unittest.TestCase):
-    # Setting Up
-    def setUp(self):
-        self.bandDataObj = BandWiki("Nirvana")
-    
-    def tearDown(self):
-        self.bandDataObj = None
-    
-    # === Testing === #
-    def test_getUlDiscography(self):
-        html = requests.get("https://en.wikipedia.org/wiki/Nirvana_(band)").content
-        self.testSoup = BeautifulSoup(html, "html.parser")
-        resultList = self.bandDataObj.getUlDiscography(self.testSoup)
-        self.assertListEqual(resultList, TEST_DISCO_LIST)
-
-    def test_getAllInfos(self):
-        resultDict = self.bandDataObj.getAllInfos()
-        self.assertDictEqual(resultDict, TEST_MAIN_DICT)
-
-    #@unittest.skip("To check dictionnaries, comment this line")
-    def test_OutputDict(self):
-        '''
-        This test method is not regular, I just need it to test outputs for several
-        bands dictionnaries (a sort of parametrization) but without the need of assert.
-
-        If needed, it'll print all output dictionnaries in a file named 'dictToReview.txt' 
-        to review later in order to check if resulting wikipedia scrap is clean or not.
-        '''
-        fileExists = os.path.exists(f"{PATH}/dictToReview.txt")
-        if fileExists :
-            os.remove(f"{PATH}/dictToReview.txt")
-        
-        for band in BAND_LIST:
-            with open(f"{PATH}/dictToReview.txt", "a") as file:
-                wikiObj = BandWiki(band).getAllInfos()
-                prettyDict = json.dumps(wikiObj, indent=4, ensure_ascii=False)
-                file.write(f"### (DICT START) ###\n\n")
-                file.write(f"# ================= {band} ================= #\n\n")
-                file.write(prettyDict)
-                file.write(f"\n\n### (DICT END) ###\n\n")
-
-class test_ExtractTable(unittest.TestCase):
+class test_Table(unittest.TestCase):
     '''
-    Test for prototypes methods in ExtractTable class.
+    Test for prototypes methods in Table class.
     '''
     def setUp(self):
         # =========== INIT - HERE TO FINE TUNE TEST ============ #
@@ -172,7 +110,7 @@ class test_ExtractTable(unittest.TestCase):
         Utility method that gives the possibility of testing one OR all the cases in parameters for each testing methods. It'll assert 
         every cases or one particular case. This function was writtent to allow a DRYer code and more re-usability in different tests.
 
-        > Note : If a new method in ExtractTable is created and have to be tested, don't forget to update the condition tree in returnResults()
+        > Note : If a new method in Table is created and have to be tested, don't forget to update the condition tree in returnResults()
         to include the new method.
 
         Parameters
@@ -187,7 +125,7 @@ class test_ExtractTable(unittest.TestCase):
             Dictonnary of results expected for tables (parametrization)
 
         `methodToUse` : `<class 'dict'>`
-            Method to use for the testing (one of ExtractTable methods)
+            Method to use for the testing (one of Table methods)
         '''
 
         # ======= UTILS METHODS ====== #
@@ -198,8 +136,8 @@ class test_ExtractTable(unittest.TestCase):
 
             Parameters
             ----------
-            `_tableObj` : `<class 'ExtractTable'>`
-                ExtractTable object
+            `_tableObj` : `<class 'Table'>`
+                Table object
             
             `_methodToUse` : `<class 'str'>`
                 Method to use for testing
@@ -246,7 +184,7 @@ class test_ExtractTable(unittest.TestCase):
             # Return only first part of file name
             return fileName[:match.start()]
 
-        allFiles, allCasesList = test_ExtractTable.sortFilesAndCases(srcFolder, params)
+        allFiles, allCasesList = test_Table.sortFilesAndCases(srcFolder, params)
         # CHOICE A) Test ALL header tables
         if caseToTest == "ALL":
             for file, case in zip(allFiles, params):
@@ -259,7 +197,7 @@ class test_ExtractTable(unittest.TestCase):
                     # Extract table from soup
                     table = soup.find('table')
                     # Create object for test
-                    tableObj = ExtractTable(table)
+                    tableObj = Table2Dict.Table(table)
                     # === Test object === #
                     result = returnResults(tableObj, methodToUse)
                     self.assertEqual(result, params[case])
@@ -275,7 +213,7 @@ class test_ExtractTable(unittest.TestCase):
             # Extract table from soup
             table = soup.find('table')
             # Test function
-            tableObj = ExtractTable(table)
+            tableObj = Table2Dict.Table(table)
             result = returnResults(tableObj, methodToUse)
             self.assertEqual(result, params[caseToTest])
         else:
