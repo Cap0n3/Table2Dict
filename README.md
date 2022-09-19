@@ -1,4 +1,4 @@
-# tableToDict
+# Table2Dict
 
 Module to convert an html table (1D or 2D) in a list or a dictionnary or to obtain usful informations about given table. 
 
@@ -13,7 +13,8 @@ Convert an `.html` file with one table inside to an ordered or a standard dictio
 
 ```python
 tableAbsolutePath = "/Users/Kim/Project/myTables/myTable1.html"
-tableObj = ExtractTable(tableAbsolutePath)
+# Create object
+tableObj = Table2Dict(tableAbsolutePath)
 
 # Get ordered dict (to keep original order of columns)
 myOrdDict = tableObj.getTableDict(dictType="ordered")

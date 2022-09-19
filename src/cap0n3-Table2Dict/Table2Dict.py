@@ -1,27 +1,11 @@
 """
 Module to convert an html table (1D or 2D) in a list or a dictionnary or simply give informations about passed table. It accepts 
 as parameters either absolute path to an html file (with only one table inside) or directly table's beautiful soup `<bs4.element.Tag>`.
-ExtractTable can also return the full table converted to a JSON object or return only the table header, body or the full table converted 
+Table2Dict can also return the full table converted to a JSON object or return only the table header, body or the full table converted 
 to a raw list.
-
-Usage
------
-    Convert an html file with one table inside to an ordered or a standard dictionnary :
-
-    ```python
-    tableAbsolutePath = "/Users/Kim/Project/myTables/myTable1.html"
-    tableObj = ExtractTable(tableAbsolutePath)
-
-    # Get ordered dict (to keep original order of columns)
-    myOrdDict = tableObj.getTableDict(dictType="ordered")
-
-    # Get dict (default)
-    myDict = tableObj.getTableDict()
-    ```
 """
 
-import os
-from .Utils.customLogging import moduleLogging
+from .utils.customLogging import moduleLogging
 from bs4 import BeautifulSoup
 from collections import namedtuple, OrderedDict
 import json
@@ -431,7 +415,7 @@ class Table2Dict:
                 break
             # Get row contents
             rowContents = row.contents
-            contentCount = len(ExtractTable.removeNewLines(rowContents))
+            contentCount = len(Table2Dict.removeNewLines(rowContents))
             # Store number of columns of table (to return)
             if rowIndex == 0:
                 totalColumns = contentCount
@@ -499,14 +483,14 @@ class Table2Dict:
         headerRowLength = tableType["total_header_rows"]
         # Init table reprentation
         tableRepr = []
-        headerFirstRow = ExtractTable.removeNewLines(self.allRows[0].contents)
+        headerFirstRow = Table2Dict.removeNewLines(self.allRows[0].contents)
         # === 1. Get data of first row and start table list reprentation === #
         for cell in headerFirstRow:
             columnReprList = []
             # Get rowspans and colspans (if any the convert to int or return None)
-            rowspan, colspan = ExtractTable.getSpans(cell)
+            rowspan, colspan = Table2Dict.getSpans(cell)
             # Insert data in table reprentation
-            tableRepr = ExtractTable.insertRows(
+            tableRepr = Table2Dict.insertRows(
                 cell, rowspan, colspan, 0, tableRepr, "firstHeaderRow"
             )
 
@@ -525,12 +509,12 @@ class Table2Dict:
                 if rowIndex == headerRowLength:
                     break
                 # Get row content and clean them
-                rowChildren = ExtractTable.removeNewLines(row.contents)
+                rowChildren = Table2Dict.removeNewLines(row.contents)
                 # Loop through elements and insert them in table list representation
                 for cell in rowChildren:
                     # Get rowspans and colspans (if any the convert to int or return None)
-                    rowspan, colspan = ExtractTable.getSpans(cell)
-                    tableRepr = ExtractTable.insertRows(
+                    rowspan, colspan = Table2Dict.getSpans(cell)
+                    tableRepr = Table2Dict.insertRows(
                         cell, rowspan, colspan, rowIndex, tableRepr, "headerRow"
                     )
         logger.debug(f"[getTableHeader] TABLE FINAL RESULT :\n{tableRepr}")
@@ -562,20 +546,20 @@ class Table2Dict:
             # Since we skipped header, row index is out whack so re-adjust rowIndex at correct index
             # rowIndex += headerRowLength
             # Get row content and clean them
-            rowChildren = ExtractTable.removeNewLines(row.contents)
+            rowChildren = Table2Dict.removeNewLines(row.contents)
             # Loop through elements and insert them in table list representation
             for cell in rowChildren:
                 # Get rowspans (if any the convert to int or return None)
-                rowspan, colspan = ExtractTable.getSpans(cell)
+                rowspan, colspan = Table2Dict.getSpans(cell)
                 # If this is the first row
                 if rowIndex == 0:
-                    tableBodyRepr = ExtractTable.insertRows(
+                    tableBodyRepr = Table2Dict.insertRows(
                         cell, rowspan, colspan, rowIndex, tableBodyRepr, "firstBodyRow"
                     )
                     logger.info(f"Cell entered in the first row of table body !")
                     logger.info(f"{tableBodyRepr}")
                 else:
-                    tableBodyRepr = ExtractTable.insertRows(
+                    tableBodyRepr = Table2Dict.insertRows(
                         cell, rowspan, colspan, rowIndex, tableBodyRepr, "bodyRow"
                     )
                     logger.info(f"Cell entered in row of table body !")

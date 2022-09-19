@@ -1,16 +1,17 @@
 '''
-File to do random testing about anything that's needed.
+File to do one-the-go testing about anything that's needed.
 '''
 import os
 from bs4 import BeautifulSoup
 import inspect
 import sys
 
+# Go to parent folder to find module
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir)
 
-from BandAPI.CustomPackage.ExtractTableMod import ExtractTable
+# from IDONTKNOW import Table2Dict
 
 # For Windows (relative path) 
 dirname = os.path.dirname(__file__)
