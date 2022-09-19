@@ -7,8 +7,7 @@ It accepts as parameters either absolute path to an `.html` file (with only one 
 It can also return the full table converted to a JSON object or return only the table header, body or the full table converted 
 to a raw list.
 
-## Usage
-
+## Usage
 
 ```python
 import Table2Dict
