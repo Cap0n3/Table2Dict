@@ -9,6 +9,7 @@ to a raw list.
 
 ## Usage
 
+
 ```python
 import Table2Dict
 ```
