@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "Table2Dict_Cap0n3"
+name = "Table2Dict"
 version = "0.0.1"
 authors = [
   { name="Alex Guillin", email="cap0n3@protonmail.com" },
