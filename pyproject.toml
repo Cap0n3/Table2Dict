@@ -11,7 +11,7 @@ authors = [
 description = "Table2Dict converts an html table (1D or 2D) in a list, a dictionnary or get useful informations about table."
 readme = "README.md"
 license = { file="LICENSE" }
-requires-python = ">=3.8"
+requires-python = ">=3.8.9"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
