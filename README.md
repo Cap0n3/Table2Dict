@@ -1,6 +1,6 @@
 # Table2Dict
 
-Table2Dict converts an html table (1D or 2D) in a list, a dictionnary or get usful informations about table. It accepts as parameter either absolute path to an `.html` file (with only one table inside) or directly table's beautiful soup tag `<bs4.element.Tag>`.
+Table2Dict converts an html table (1D or 2D) in a list, a dictionnary or get useful informations about table. It accepts as parameter either absolute path to an `.html` file (with only one table inside) or directly table's beautiful soup tag `<bs4.element.Tag>`.
 
 It can also return the full table converted to a JSON object or return only the table header, body or the full table converted 
 to a raw list.
