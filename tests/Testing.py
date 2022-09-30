@@ -12,14 +12,13 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0, parentdir) 
 
 # Import class & functions
-from src.cap0n3_Table2Dict import Table2Dict
+from src.Table2Dict_Cap0n3 import Table2Dict
 
 #================#
 #=== Settings ===#
 #================#
 
 PATH = os.path.dirname(os.path.realpath(__file__))
-
 
 #===========================#
 #========= Testing =========#

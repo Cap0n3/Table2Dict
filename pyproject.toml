@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Table2Dict_Cap0n3"
+version = "0.0.1"
+authors = [
+  { name="Alex Guillin", email="cap0n3@protonmail.com" },
+]
+description = "Table2Dict converts an html table (1D or 2D) in a list, a dictionnary or get usful informations about table."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Cap0n3/Table2Dict/"
+"Bug Tracker" = "https://github.com/Cap0n3/Table2Dict/issues"
