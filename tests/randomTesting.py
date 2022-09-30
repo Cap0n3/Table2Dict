@@ -30,3 +30,4 @@ absPath = filename
 # ========= TESTING ========= #
 tableObj = Table2Dict.Table(absPath)
 print(tableObj.getTableDict())
+print(tableObj.getTableJson())

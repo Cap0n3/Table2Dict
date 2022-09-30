@@ -821,5 +821,18 @@ class Table:
             return finalCondition(finalKeyDict, tableType["dimensions"])
 
     def getTableJson(self, indent=4):
+        """
+        Returns table converted to JSON.
+
+        Parameters
+        ----------
+        **kwargs : `int`
+            JSON object indentation (default = 4)
+
+        Returns
+        -------
+        `JSON`
+            Full table (header + body) converted to a JSON object
+        """
         tableDict = self.getTableDict()
         return json.dumps(tableDict, indent=indent)
